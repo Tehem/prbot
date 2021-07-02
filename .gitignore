@@ -1,0 +1,19 @@
+node_modules/
+coverage/
+
+# dotenv environment variables file on local
+.env*.local
+
+application.log
+
+# Local development stuff
+.local/data
+
+# JetBrains
+.idea/
+
+# macOS
+.DS_Store
+
+# VSCode
+.vscode/settings.json

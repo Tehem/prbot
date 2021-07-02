@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  postgres:
+    container_name: 'prbot_postgres'
+    image: postgres
+    ports:
+      - 5499:5432
+    environment:
+      POSTGRES_DB: prbot_development
+      POSTGRES_USER: postgres
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - .local/init/postgres:/docker-entrypoint-initdb.d
+      - .local/data/postgres:/var/lib/postgresql/data/
