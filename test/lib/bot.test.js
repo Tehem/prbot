@@ -46,7 +46,7 @@ describe('bot.js', () => {
             expect(url).to.eql('cannonical_url');
             expect(user).to.eql('me');
             expect(channel).to.eql('mychannel');
-            return Promise.resolve();
+            return Promise.resolve(true);
           },
           getScore: () => Promise.resolve(0.5)
         };
@@ -55,6 +55,40 @@ describe('bot.js', () => {
           channel: 'mychannel',
           text: 'pr <https://github.com/transcovo/logger/pull/3>'
         }, bot.PRCONFIG)).to.eql('PR in queue +1/-2. Your awesomeness score is 50%.');
+      });
+
+      it('should return a duplicate pr info if already there', async () => {
+        const queue = {
+          push: (url, user, channel) => {
+            expect(url).to.eql('cannonical_url');
+            expect(user).to.eql('me');
+            expect(channel).to.eql('mychannel');
+            return Promise.resolve(false);
+          },
+          getScore: () => Promise.resolve(0.5)
+        };
+        expect(await bot.answerPrSubmission(queue, {
+          user: 'me',
+          channel: 'mychannel',
+          text: 'pr <https://github.com/transcovo/logger/pull/3>'
+        }, bot.PRCONFIG)).to.eql('PR already in queue.');
+      });
+
+      it('should return an error message is some error is catched', async () => {
+        const queue = {
+          push: (url, user, channel) => {
+            expect(url).to.eql('cannonical_url');
+            expect(user).to.eql('me');
+            expect(channel).to.eql('mychannel');
+            return Promise.resolve(null);
+          },
+          getScore: () => Promise.resolve(0.5)
+        };
+        expect(await bot.answerPrSubmission(queue, {
+          user: 'me',
+          channel: 'mychannel',
+          text: 'pr <https://github.com/transcovo/logger/pull/3>'
+        }, bot.PRCONFIG)).to.eql('PR could not be added, sorry.');
       });
     });
   });

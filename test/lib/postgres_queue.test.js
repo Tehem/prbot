@@ -165,6 +165,32 @@ describe('queue', () => {
       expect((await queue.pop('unknown', 'channelA')).pr).to.equal('AAA');
     });
 
+    it('should not add twice the same pr on a same channel', async() => {
+      const queue = queueFactory.createQueue(db);
+
+      await queue.push('AAA', 'joe', 'test');
+      const item = await queue.list();
+      expect(item).to.deep.equal([{
+        id: item[0].id,
+        assigned: null,
+        pr: 'AAA',
+        queued: item[0].queued,
+        reporter: 'joe',
+        channel: 'test'
+      }]);
+
+      await queue.push('AAA', 'jane', 'test');
+      const item2 = await queue.list();
+      expect(item2).to.deep.equal([{
+        id: item2[0].id,
+        assigned: null,
+        pr: 'AAA',
+        queued: item2[0].queued,
+        reporter: 'joe',
+        channel: 'test'
+      }]);
+    })
+
     it('should compute the score', async () => {
       const queue = queueFactory.createQueue(db);
 
