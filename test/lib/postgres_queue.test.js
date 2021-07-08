@@ -23,7 +23,6 @@ describe('queue', () => {
       const item = await queue.list();
       expect(item).to.deep.equal([{
         id: item[0].id,
-        assigned: null,
         pr: 'AAA',
         queued: item[0].queued,
         reporter: 'joe',
@@ -34,7 +33,6 @@ describe('queue', () => {
       const items = await queue.list();
       expect(items).to.deep.equal([{
         id: items[0].id,
-        assigned: null,
         pr: 'AAA',
         queued: items[0].queued,
         reporter: 'joe',
@@ -42,7 +40,6 @@ describe('queue', () => {
       },
       {
         id: items[1].id,
-        assigned: null,
         pr: 'BBB',
         queued: items[1].queued,
         reporter: 'jane',
@@ -52,7 +49,6 @@ describe('queue', () => {
       expect(await queue.pop('unknown')).to.deep.equal(
         {
           id: items[0].id,
-          assigned: 'unknown',
           pr: 'AAA',
           queued: items[0].queued,
           reporter: 'joe',
@@ -63,7 +59,6 @@ describe('queue', () => {
       const item2 = await queue.list();
       expect(item2).to.deep.equal([{
         id: item2[0].id,
-        assigned: null,
         pr: 'BBB',
         queued: item2[0].queued,
         reporter: 'jane',
@@ -73,7 +68,6 @@ describe('queue', () => {
       expect(await queue.pop('unknown')).to.deep.equal(
         {
           id: item2[0].id,
-          assigned: 'unknown',
           pr: 'BBB',
           queued: item2[0].queued,
           reporter: 'jane',
@@ -110,7 +104,6 @@ describe('queue', () => {
       const item = await queue.list();
       expect(item).to.deep.equal([{
         id: item[0].id,
-        assigned: null,
         pr: 'AAA',
         queued: item[0].queued,
         reporter: 'joe',
@@ -132,7 +125,6 @@ describe('queue', () => {
       const item = await queue.list();
       expect(item).to.deep.equal([{
         id: item[0].id,
-        assigned: null,
         pr: 'AAA',
         queued: item[0].queued,
         reporter: 'joe',
@@ -153,7 +145,6 @@ describe('queue', () => {
       const item = await queue.list('channelA');
       expect(item).to.deep.equal([{
         id: item[0].id,
-        assigned: null,
         pr: 'AAA',
         queued: item[0].queued,
         reporter: 'joe',
@@ -172,7 +163,6 @@ describe('queue', () => {
       const item = await queue.list();
       expect(item).to.deep.equal([{
         id: item[0].id,
-        assigned: null,
         pr: 'AAA',
         queued: item[0].queued,
         reporter: 'joe',
@@ -183,29 +173,12 @@ describe('queue', () => {
       const item2 = await queue.list();
       expect(item2).to.deep.equal([{
         id: item2[0].id,
-        assigned: null,
         pr: 'AAA',
         queued: item2[0].queued,
         reporter: 'joe',
         channel: 'test'
       }]);
     })
-
-    it('should compute the score', async () => {
-      const queue = queueFactory.createQueue(db);
-
-      expect(await queue.getScore('userForScore1')).to.equal(0);
-
-      await queue.push('AAA', 'userForScore1', 'test');
-      await queue.push('BBB', 'userForScore2', 'test');
-
-      expect(await queue.getScore('userForScore1')).to.equal(0);
-
-      await queue.pop('userForScore1');
-
-      expect(await queue.getScore('userForScore1')).to.equal(0.5);
-      expect(await queue.getScore('userForScore2')).to.equal(0);
-    });
   });
 
   describe('when db connection fails', () => {

@@ -47,14 +47,13 @@ describe('bot.js', () => {
             expect(user).to.eql('me');
             expect(channel).to.eql('mychannel');
             return Promise.resolve(true);
-          },
-          getScore: () => Promise.resolve(0.5)
+          }
         };
         expect(await bot.answerPrSubmission(queue, {
           user: 'me',
           channel: 'mychannel',
           text: 'pr <https://github.com/transcovo/logger/pull/3>'
-        }, bot.PRCONFIG)).to.eql('PR in queue +1/-2. Your awesomeness score is 50%.');
+        }, bot.PRCONFIG)).to.eql('PR in queue +1/-2.');
       });
 
       it('should return a duplicate pr info if already there', async () => {
@@ -64,8 +63,7 @@ describe('bot.js', () => {
             expect(user).to.eql('me');
             expect(channel).to.eql('mychannel');
             return Promise.resolve(false);
-          },
-          getScore: () => Promise.resolve(0.5)
+          }
         };
         expect(await bot.answerPrSubmission(queue, {
           user: 'me',
@@ -81,8 +79,7 @@ describe('bot.js', () => {
             expect(user).to.eql('me');
             expect(channel).to.eql('mychannel');
             return Promise.resolve(null);
-          },
-          getScore: () => Promise.resolve(0.5)
+          }
         };
         expect(await bot.answerPrSubmission(queue, {
           user: 'me',
@@ -262,7 +259,7 @@ describe('bot.js', () => {
           user: 'me',
           channel: 'mychannel',
           text: 'helping'
-        })).to.eql('a pr Your awesomeness score is 50%.');
+        })).to.eql('a pr');
         expect(popCallParams).to.eql({
           user: 'me',
           channel: 'mychannel',
@@ -282,7 +279,7 @@ describe('bot.js', () => {
           user: 'me',
           channel: 'mychannel',
           text: 'HELPING a'
-        })).to.eql('a pr Your awesomeness score is 50%.');
+        })).to.eql('a pr');
         expect(popCallParams).to.eql({
           user: 'me',
           channel: 'mychannel',
@@ -304,7 +301,7 @@ describe('bot.js', () => {
           user: 'me',
           channel: 'mychannel',
           text: 'helping  <the pr> '
-        })).to.eql('the pr Your awesomeness score is 50%.');
+        })).to.eql('the pr');
         expect(popCallParams).to.eql({
           user: 'me',
           channel: 'mychannel',
@@ -326,7 +323,7 @@ describe('bot.js', () => {
           user: 'me',
           channel: 'mychannel',
           text: 'helping'
-        })).to.eql('Sorry, no more PRs for you in stock! Your awesomeness score is 50%.');
+        })).to.eql('Sorry, no more PRs for you in stock!');
         expect(popCallParams).to.eql({
           user: 'me',
           channel: 'mychannel',

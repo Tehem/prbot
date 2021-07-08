@@ -6,9 +6,9 @@
   "scripts": {
     "dev": "nodemon index",
     "start": "node index",
-    "test": "eslint . && npm run coverage",
-    "mocha": "mocha --recursive",
-    "coverage": "istanbul cover _mocha --include-all-sources -x \"**/test/**\" -- --recursive"
+    "test": "NODE_ENV=test eslint . && npm run coverage",
+    "mocha": "NODE_ENV=test mocha --recursive",
+    "coverage": "NODE_ENV=test istanbul cover _mocha --include-all-sources -x \"**/test/**\" -- --recursive"
   },
   "author": "",
   "devDependencies": {
